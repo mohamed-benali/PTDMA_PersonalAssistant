@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        /*
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) checkPermission();
 
         final Intent speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -38,7 +38,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         startActivityForResult(speechRecognizerIntent, SPEECH_REQUEST_CODE);
+        */
 
+        Intent myIntent = new Intent(this, TasksActivity.class);
+        startActivity(myIntent);
     }
 
     private void checkPermission() {

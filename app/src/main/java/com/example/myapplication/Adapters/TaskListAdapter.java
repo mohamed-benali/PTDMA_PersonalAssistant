@@ -32,9 +32,6 @@ public class TaskListAdapter extends RecyclerView.Adapter {
             textView_done           = itemView.findViewById(R.id.done);
         }
 
-        public void bla() {
-
-        }
     }
 
 

@@ -1,6 +1,8 @@
 package com.example.myapplication.Models;
 
-public class TaskModel {
+import java.io.Serializable;
+
+public class TaskModel implements Serializable {
     private String title;
     private String description;
     private Boolean done;
