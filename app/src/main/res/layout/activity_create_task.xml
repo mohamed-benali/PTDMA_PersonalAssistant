@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.Tasks.TasksActivity">
+    tools:context=".Activities.Tasks.CreateTaskActivity">
 
     <include layout="@layout/myappbar" />
 
+    <include layout="@layout/content_create_task" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

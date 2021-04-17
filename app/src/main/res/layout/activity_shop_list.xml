@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.Tasks.TasksActivity">
+    tools:context=".Activities.ShoppingLists.ShopListActivity">
 
     <include layout="@layout/myappbar" />
 
+    <include layout="@layout/content_shop_list" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

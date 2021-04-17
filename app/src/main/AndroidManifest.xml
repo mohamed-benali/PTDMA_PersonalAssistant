@@ -5,6 +5,12 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher_background"
@@ -13,10 +19,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
-            android:name=".Activities.TasksActivity"
-            android:label="@string/title_activity_tasks"
+            android:name=".Activities.ShoppingLists.SpecificListActivity"
+            android:label="@string/title_activity_specific_list"
             android:theme="@style/Theme.MyApplication.NoActionBar"></activity>
-        <activity android:name=".Activities.MainActivity">
+        <activity
+            android:name=".Activities.ShoppingLists.ShopListActivity"
+            android:label="@string/title_activity_shop_list"
+            android:theme="@style/Theme.MyApplication.NoActionBar" />
+        <activity
+            android:name=".Activities.Tasks.UpdateTaskActivity"
+            android:label="@string/title_activity_update_task"
+            android:theme="@style/Theme.MyApplication.NoActionBar" />
+        <activity
+            android:name=".Activities.Tasks.CreateTaskActivity"
+            android:label="@string/title_activity_create_task"
+            android:theme="@style/Theme.MyApplication.NoActionBar" />
+        <activity
+            android:name=".Activities.Tasks.TasksActivity"
+            android:label="@string/title_activity_tasks"
+            android:theme="@style/Theme.MyApplication.NoActionBar" />
+        <activity
+            android:name=".Activities.MainActivity"
+            android:theme="@style/Theme.MyApplication.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
