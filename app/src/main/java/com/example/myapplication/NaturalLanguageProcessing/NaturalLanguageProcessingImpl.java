@@ -148,5 +148,20 @@ public class NaturalLanguageProcessingImpl implements NaturalLanguageProcessing 
         return null;
     }
 
+    @Override
+    public boolean isBought(String spokenText) {
+        return false;
+    }
+
+    @Override
+    public boolean isNotBought(String spokenText) {
+        return false;
+    }
+
+    @Override
+    public boolean isGoToEvents(String spokenText) {
+        return false;
+    }
+
 
 }

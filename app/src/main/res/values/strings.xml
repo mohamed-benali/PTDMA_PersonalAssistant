@@ -19,4 +19,5 @@
     <string name="title_activity_update_task">UpdateTaskActivity</string>
     <string name="title_activity_shop_list">ShopListActivity</string>
     <string name="title_activity_specific_list">SpecificListActivity</string>
+    <string name="title_activity_events">EventsActivity</string>
 </resources>

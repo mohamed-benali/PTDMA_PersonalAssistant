@@ -16,14 +16,14 @@ public class NaturalLanguageProcessingImplSpanish implements NaturalLanguageProc
     public boolean isDeleteTask(String spokenText) { // eliminar [title]
         spokenText = this.normalizeText(spokenText);
         List<String> words = Arrays.asList(spokenText.split(" "));
-        return !isDeleteAllTask(spokenText) && words.size() >= 1 && words.get(0).equals("eliminar");
+        return !isDeleteAllTask(spokenText) && words.size() >= 2 && words.get(0).equals("eliminar");
     }
 
     @Override
     public boolean isUpdateTask(String spokenText) { // modificar [title]
         spokenText = this.normalizeText(spokenText);
         List<String> words = Arrays.asList(spokenText.split(" "));
-        return words.size() >= 1 && words.get(0).equals("modificar");
+        return words.size() >= 2 && words.get(0).equals("modificar");
     }
 
     @Override
@@ -43,14 +43,14 @@ public class NaturalLanguageProcessingImplSpanish implements NaturalLanguageProc
     public boolean isTaskDone(String spokenText) { // tarea completada [title]
         spokenText = this.normalizeText(spokenText);
         List<String> words = Arrays.asList(spokenText.split(" "));
-        return words.size() >= 2 && words.get(0).equals("tarea") && words.get(1).equals("completada");
+        return words.size() >= 3 && words.get(0).equals("tarea") && words.get(1).equals("completada");
     }
 
     @Override
     public boolean isTaskNotDone(String spokenText) { // tarea no completada [title]
         spokenText = this.normalizeText(spokenText);
         List<String> words = Arrays.asList(spokenText.split(" "));
-        return words.size() >= 3 && words.get(0).equals("tarea") && words.get(1).equals("no") &&  words.get(2).equals("completada");
+        return words.size() >= 4 && words.get(0).equals("tarea") && words.get(1).equals("no") &&  words.get(2).equals("completada");
     }
 
     /**
@@ -152,21 +152,21 @@ public class NaturalLanguageProcessingImplSpanish implements NaturalLanguageProc
     @Override
     public boolean isCreate(String spokenText) { // crear [title]
         List<String> words = Arrays.asList(spokenText.split(" "));
-        return words.size() >= 1 && words.get(0).equals("crear");
+        return words.size() >= 2 && words.get(0).equals("crear");
     }
 
     @Override
     public boolean isUpdate(String spokenText) { // modificar [title]
         spokenText = this.normalizeText(spokenText);
         List<String> words = Arrays.asList(spokenText.split(" "));
-        return words.size() >= 1 && words.get(0).equals("modificar");
+        return words.size() >= 2 && words.get(0).equals("modificar");
     }
 
     @Override
     public boolean isDelete(String spokenText) { // eliminar [title]
         spokenText = this.normalizeText(spokenText);
         List<String> words = Arrays.asList(spokenText.split(" "));
-        return !isDeleteAll(spokenText) && words.size() >= 1 && words.get(0).equals("eliminar");
+        return !isDeleteAll(spokenText) && words.size() >= 2 && words.get(0).equals("eliminar");
     }
 
     @Override
@@ -179,7 +179,7 @@ public class NaturalLanguageProcessingImplSpanish implements NaturalLanguageProc
     public boolean isSeeElement(String spokenText) { // ver [title]
         spokenText = this.normalizeText(spokenText);
         List<String> words = Arrays.asList(spokenText.split(" "));
-        return words.size() >= 1 && words.get(0).equals("ver");
+        return words.size() >= 2 && words.get(0).equals("ver");
     }
 
     @Override
@@ -188,6 +188,28 @@ public class NaturalLanguageProcessingImplSpanish implements NaturalLanguageProc
         if(isTaskDone(spokenText)) return getTextWithout_N_FirstWords(spokenText, 2);
         if(isTaskNotDone(spokenText)) return getTextWithout_N_FirstWords(spokenText, 3);
         else return getTextWithout_N_FirstWords(spokenText, 1);
+    }
+
+    @Override
+    public boolean isBought(String spokenText) { // comprar [element]
+        spokenText = this.normalizeText(spokenText);
+        List<String> words = Arrays.asList(spokenText.split(" "));
+        return words.size() >= 2 && words.get(0).equals("marcar");
+    }
+
+    @Override
+    public boolean isNotBought(String spokenText) { // no comprar [element]
+        spokenText = this.normalizeText(spokenText);
+        List<String> words = Arrays.asList(spokenText.split(" "));
+        return words.size() >= 2 && words.get(0).equals("desmarcar");
+    }
+
+
+
+    //************************** SHOPPING LIST *****************************//
+    @Override
+    public boolean isGoToEvents(String spokenText) {
+        return spokenText.equals("event") || spokenText.equals("events");
     }
 
 }

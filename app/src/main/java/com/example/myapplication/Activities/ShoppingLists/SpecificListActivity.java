@@ -7,6 +7,7 @@ import com.example.myapplication.Adapters.ShopListAdapter;
 import com.example.myapplication.Adapters.ShopListElementAdapter;
 import com.example.myapplication.Listeners.MicrophoneOnButtonClickListener;
 import com.example.myapplication.Models.ListModel;
+import com.example.myapplication.Models.TaskModel;
 import com.example.myapplication.NaturalLanguageProcessing.NaturalLanguageProcessing;
 import com.example.myapplication.Persistence.DBHelper;
 import com.example.myapplication.Persistence.DBHelperImpl;
@@ -42,12 +43,15 @@ public class SpecificListActivity extends AppCompatActivity {
     TextToSpeech speaker;
     private boolean askingForDeleteAllConfirm = false;
 
+    private String ID;
+    ListModel model;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_specific_list);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        String ID = this.getIntent().getStringExtra("ID");
+        ID = this.getIntent().getStringExtra("ID");
         toolbar.setTitle(ID);
         setSupportActionBar(toolbar);
 
@@ -61,6 +65,8 @@ public class SpecificListActivity extends AppCompatActivity {
 
         DBHelper dbHelper = new DBHelperImpl(this);
         mAdapter = new ShopListElementAdapter(dbHelper.getShopListbyID(ID).getElements());
+
+        model = dbHelper.getShopListbyID(ID);
 
         mRecyclerView.addItemDecoration(new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
         mRecyclerView.setAdapter(mAdapter);
@@ -80,25 +86,18 @@ public class SpecificListActivity extends AppCompatActivity {
             spokenText = NLP.normalizeText(spokenText);
             if(NLP.isCreate(spokenText)) {
                 String id = NLP.getIdFromText(spokenText);
-                dbHelper.save(new ListModel(id));
+                model.add(id);
+                dbHelper.save(ID, model);
                 restart();
             }
-            else if(NLP.isUpdate(spokenText)) {
-                Intent myIntent = new Intent(this, SpecificListActivity.class);
-                String id = NLP.getIdFromText(spokenText);
-                if(dbHelper.taskExists(id)) {
-                    myIntent.putExtra("ID", id);
-                    startActivity(myIntent);
-                }
-                else speaker.listDontExist();
-            }
             else if(NLP.isDelete(spokenText)) {
-                String ID = NLP.getIdFromText(spokenText);
-                //TODO: Confirm task with id exists
-                if(dbHelper.listExists(ID)) speaker.askConfirmDelete();
+                String elementId = NLP.getIdFromText(spokenText);
+                // TODO: Confirm task with id exists
+                if(dbHelper.listElementExists(ID,elementId)) speaker.askConfirmDelete();
                 else speaker.sayElementDontExist();
-                ID_forDelete = ID;
+                ID_forDelete = elementId;
                 this.askingForDeleteConfirm = true;
+                // TODO: Ask with speaker as follow up
             }
             else if(NLP.isDeleteAll(spokenText)) {
                 speaker.askConfirmDelete();
@@ -106,17 +105,35 @@ public class SpecificListActivity extends AppCompatActivity {
             }
             else if(NLP.isConfirmation(spokenText)) {
                 if(askingForDeleteConfirm) {
-                    dbHelper.deleteListById(ID_forDelete);
+                    dbHelper.deleteListElementById(ID, ID_forDelete);
                     this.askingForDeleteConfirm = false;
+                    restart();
                 }
                 else if(askingForDeleteAllConfirm) {
                     dbHelper.deleteAllLists();
                     askingForDeleteAllConfirm = false;
+                    restart();
                 }
-                restart();
             }
-            else { // Didnt understand,
-                // Dialog or something with the info
+            else if(NLP.isBought(spokenText)) {
+                String elementId = NLP.getIdFromText(spokenText);
+                if(model.contains(elementId)) {
+                    model.setBought(elementId);
+                    dbHelper.save(ID, model);
+                    restart();
+                }
+                else speaker.sayElementDontExist();
+            }
+            else if(NLP.isNotBought(spokenText)) {
+                String elementId = NLP.getIdFromText(spokenText);
+                if(model.contains(elementId)) {
+                    model.setNotBought(elementId);
+                    dbHelper.save(ID, model);
+                    restart();
+                }
+                else speaker.sayElementDontExist();
+            }
+            else { // Dialog or something with the info
                 speaker.didNotUnderstand();
             }
 
@@ -131,9 +148,10 @@ public class SpecificListActivity extends AppCompatActivity {
     }
 
     private void restart() {
+        String id = ID;
         finish();
         overridePendingTransition(0, 0);
-        startActivity(new Intent(this, ShopListActivity.class));
+        startActivity(new Intent(this, SpecificListActivity.class).putExtra("ID", id));
         overridePendingTransition(0, 0);
     }
 }

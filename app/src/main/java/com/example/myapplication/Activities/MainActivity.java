@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         ImageButton imageButton = findViewById(R.id.imageButton);
         imageButton.setOnClickListener(new MicrophoneOnButtonClickListener(this));
 
-        Intent myIntent = new Intent(this, TasksActivity.class);
+        Intent myIntent = new Intent(this, ShopListActivity.class);
         startActivity(myIntent);
     }
 
@@ -53,6 +53,10 @@ public class MainActivity extends AppCompatActivity {
             }
             else if(NLP.isShoppingList(spokenText)) {
                 Intent myIntent = new Intent(this, ShopListActivity.class);
+                startActivity(myIntent);
+            }
+            else if(NLP.isGoToEvents(spokenText)) {
+                Intent myIntent = new Intent(this, EventsActivity.class);
                 startActivity(myIntent);
             }
         }

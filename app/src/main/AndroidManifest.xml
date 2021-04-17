@@ -19,9 +19,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
+            android:name=".Activities.EventsActivity"
+            android:label="@string/title_activity_events"
+            android:theme="@style/Theme.MyApplication.NoActionBar"></activity>
+        <activity
             android:name=".Activities.ShoppingLists.SpecificListActivity"
             android:label="@string/title_activity_specific_list"
-            android:theme="@style/Theme.MyApplication.NoActionBar"></activity>
+            android:theme="@style/Theme.MyApplication.NoActionBar" />
         <activity
             android:name=".Activities.ShoppingLists.ShopListActivity"
             android:label="@string/title_activity_shop_list"

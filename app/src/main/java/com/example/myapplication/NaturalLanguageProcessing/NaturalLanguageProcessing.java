@@ -43,4 +43,10 @@ public interface NaturalLanguageProcessing {
     boolean isSeeElement(String spokenText);
 
     String getIdFromText(String spokenText);
+
+    boolean isBought(String spokenText);
+
+    boolean isNotBought(String spokenText);
+
+    boolean isGoToEvents(String spokenText);
 }

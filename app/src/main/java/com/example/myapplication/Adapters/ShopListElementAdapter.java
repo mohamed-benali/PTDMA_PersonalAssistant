@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Models.ElementModel;
 import com.example.myapplication.Models.ListModel;
 import com.example.myapplication.R;
 
@@ -15,17 +16,19 @@ import java.util.List;
 
 public class ShopListElementAdapter extends RecyclerView.Adapter {
 
-    private List<String> mDataSet;
+    private List<ElementModel> mDataSet;
 
-    public ShopListElementAdapter(List<String> myDataSet) {
+    public ShopListElementAdapter(List<ElementModel> myDataSet) {
         this.mDataSet = myDataSet;
     }
 
     public static class myViewHolder extends RecyclerView.ViewHolder {
         public TextView textView_title;
+        public TextView bought;
         public myViewHolder(View itemView) {
             super(itemView);
             textView_title          = itemView.findViewById(R.id.title);
+            bought = itemView.findViewById(R.id.bought);
         }
     }
 
@@ -41,9 +44,10 @@ public class ShopListElementAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        String element = mDataSet.get(position);
+        ElementModel element = mDataSet.get(position);
         ShopListElementAdapter.myViewHolder holder2 = (ShopListElementAdapter.myViewHolder) holder;
-        holder2.textView_title.setText(element);
+        holder2.textView_title.setText(element.getTitle());
+        holder2.bought.setText(element.isBought().toString());
     }
 
     @Override

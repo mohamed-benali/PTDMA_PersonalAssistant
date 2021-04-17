@@ -7,21 +7,18 @@ import com.example.myapplication.Models.TaskModel;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class DBHelperImpl implements DBHelper {
     Context context;
 
-    String tasksPath = "llista_tasks.obj";
-    String listsPath = "llista_shop_lists.obj";
+    String tasksPath = "llista_tasks2.obj";
+    String listsPath = "llista_shop_lists2.obj";
 
     public DBHelperImpl(Context context) {
         this.context = context;
@@ -147,7 +144,6 @@ public class DBHelperImpl implements DBHelper {
             tasks.add(taskModel);
         }
         this.setTasks(tasks);
-
     }
 
 
@@ -166,7 +162,7 @@ public class DBHelperImpl implements DBHelper {
             boolean fileExist = this.fileExists(context, listsPath);
             if(!fileExist) this.createFileList(listsPath);
 
-            fis = context.openFileInput(tasksPath);
+            fis = context.openFileInput(listsPath);
             ObjectInputStream is = new ObjectInputStream(fis);
             mDades = (List<ListModel>) is.readObject();
             is.close();
@@ -220,10 +216,38 @@ public class DBHelperImpl implements DBHelper {
         this.setShopLists(list);
     }
 
+    @Override
+    public void save(String taskID, ListModel model) {
+        List<ListModel> list = this.getShopLists();
+        int index = -1;
+        for(int i = 0; i < list.size(); ++i) {
+            ListModel element = list.get(i);
+            if(element.getTitle().equals(taskID)) index = i;
+        }
+        if(index >= 0) {
+            list.remove(index);
+            list.add(model);
+        }
+        this.setShopLists(list);
+    }
+
+    @Override
+    public boolean listElementExists(String id, String elementId) {
+        ListModel model = this.getShopListbyID(id);
+        return model.contains(elementId);
+    }
+
+    @Override
+    public void deleteListElementById(String ID, String id_forDelete) {
+        ListModel model = this.getShopListbyID(ID);
+        model.remove(id_forDelete);
+        this.save(ID, model);
+    }
+
     private void setShopLists(List<ListModel> mDades) {
         FileOutputStream fos;
         try {
-            fos = context.openFileOutput(tasksPath, Context.MODE_PRIVATE);
+            fos = context.openFileOutput(this.listsPath, Context.MODE_PRIVATE);
             ObjectOutputStream os = new ObjectOutputStream(fos);
             os.writeObject(mDades);
             os.close();

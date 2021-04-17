@@ -28,4 +28,9 @@ public interface DBHelper {
     ListModel getShopListbyID(String id);
 
     void save(ListModel listModel);
+    void save(String taskID, ListModel model);
+
+    boolean listElementExists(String id, String elementId);
+
+    void deleteListElementById(String ID, String id_forDelete);
 }
