@@ -2,6 +2,7 @@ package com.example.myapplication.Activities.Tasks;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.widget.ImageButton;
 
@@ -157,13 +158,14 @@ public class TasksActivity extends AppCompatActivity {
                 speaker.didNotUnderstand();
             }
             if(askingForDeleteAllConfirm || askingForDeleteConfirm) {
-                try {
-                    Thread.sleep(1700);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
                 RecognizerIntentManager recognizerIntentManager = new RecognizerIntentManagerImpl(this);
-                recognizerIntentManager.startSpeechToTextIntent();
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        recognizerIntentManager.startSpeechToTextIntent();
+                    }
+                }, 1400);
             }
 
         }
