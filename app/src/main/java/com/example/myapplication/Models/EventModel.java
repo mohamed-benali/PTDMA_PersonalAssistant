@@ -33,7 +33,7 @@ public class EventModel {
     }
 
     public String getDate() {
-        return getDay()+'/' + getMonth()+'/' + getYear();
+        return getMonth()+'/' + getDay()+'/' + getYear();
     }
     public void setDate(String date) { // DD/MM/YYYY
         String[] tmp = date.split("/");

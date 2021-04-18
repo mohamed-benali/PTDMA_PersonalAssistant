@@ -20,6 +20,8 @@ import android.widget.ImageButton;
 
 import com.example.myapplication.R;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class SpecificEventActivity extends AppCompatActivity {
@@ -33,7 +35,7 @@ public class SpecificEventActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_task);
+        setContentView(R.layout.activity_specific_event);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -57,8 +59,11 @@ public class SpecificEventActivity extends AppCompatActivity {
             editText_year.setText(eventModel.getYear());
             editText_month.setText(eventModel.getMonth());
             editText_day.setText(eventModel.getDay());
-        } else { // Es creacion  (quiza poner default en la fecha
-
+        } else { // Es creacion  (quiza poner default en la fecha)
+            Date currentTime = Calendar.getInstance().getTime();
+            editText_year.setText(String.valueOf(currentTime.getYear()+1900));
+            editText_month.setText(String.valueOf(currentTime.getMonth()+1));
+            editText_day.setText(String.valueOf(currentTime.getDate()));
         }
 
     }

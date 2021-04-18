@@ -1,5 +1,6 @@
 package com.example.myapplication.Activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -7,9 +8,11 @@ import com.example.myapplication.Activities.ShoppingLists.ShopListActivity;
 import com.example.myapplication.Activities.ShoppingLists.SpecificListActivity;
 import com.example.myapplication.Activities.Tasks.CreateTaskActivity;
 import com.example.myapplication.Adapters.EventsAdapter;
+import com.example.myapplication.CalendarManager.CalendarManager;
 import com.example.myapplication.Listeners.MicrophoneOnButtonClickListener;
 import com.example.myapplication.Models.ListModel;
 import com.example.myapplication.NaturalLanguageProcessing.NaturalLanguageProcessing;
+import com.example.myapplication.PermissionsManager;
 import com.example.myapplication.Persistence.DBHelper;
 import com.example.myapplication.Persistence.DBHelperImpl;
 import com.example.myapplication.REQUEST_CODES.REQUEST_CODES;
@@ -64,6 +67,7 @@ public class EventsActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
 
         speaker = new TextToSpeechImpl(this);
+
     }
 
     @Override
@@ -136,7 +140,7 @@ public class EventsActivity extends AppCompatActivity {
     private void restart() {
         finish();
         overridePendingTransition(0, 0);
-        startActivity(new Intent(this, ShopListActivity.class));
+        startActivity(new Intent(this, EventsActivity.class));
         overridePendingTransition(0, 0);
     }
 }

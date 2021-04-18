@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 public class PermissionsManager {
 
     public static final Integer RecordAudioRequestCode = 1;
+    public static final Integer CalendarRequestCode = 2;
 
     private Activity activity;
 
@@ -37,4 +38,13 @@ public class PermissionsManager {
     }
 
 
+    public boolean calendarPermissionNotGranted() {
+        return !(ContextCompat.checkSelfPermission(this.getActivity(), Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED
+                &&  ContextCompat.checkSelfPermission(this.getActivity(), Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED);
+
+    }
+
+    public void checkCalendarPermission() {
+        ActivityCompat.requestPermissions(this.getActivity(),new String[]{Manifest.permission.WRITE_CALENDAR,Manifest.permission.READ_CALENDAR }, CalendarRequestCode);
+    }
 }

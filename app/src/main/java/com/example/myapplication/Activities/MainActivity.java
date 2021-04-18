@@ -7,16 +7,19 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.util.Log;
 import android.widget.ImageButton;
 
 import com.example.myapplication.Activities.ShoppingLists.ShopListActivity;
 import com.example.myapplication.Activities.Tasks.TasksActivity;
 import com.example.myapplication.Listeners.MicrophoneOnButtonClickListener;
 import com.example.myapplication.NaturalLanguageProcessing.NaturalLanguageProcessing;
+import com.example.myapplication.PermissionsManager;
 import com.example.myapplication.R;
 import com.example.myapplication.REQUEST_CODES.REQUEST_CODES;
 
 import java.util.List;
+import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,8 +34,11 @@ public class MainActivity extends AppCompatActivity {
         ImageButton imageButton = findViewById(R.id.imageButton);
         imageButton.setOnClickListener(new MicrophoneOnButtonClickListener(this));
 
-        Intent myIntent = new Intent(this, ShopListActivity.class);
-        startActivity(myIntent);
+        PermissionsManager permissionsManager = new PermissionsManager(this);
+        if(permissionsManager.calendarPermissionNotGranted()) permissionsManager.checkCalendarPermission();
+
+        //Log.d("----------------------------------------TimeZone", TimeZone.getDefault().toString());
+
     }
 
 
