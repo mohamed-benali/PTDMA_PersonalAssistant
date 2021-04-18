@@ -279,20 +279,20 @@ public class DBHelperImpl implements DBHelper {
     }
 
     @Override
-    public void deleteAllEvents() {
+    public void deleteAllEvents() { //TODO: This wont work because cant be problematic to erase everything by mistake (ven with confirm)
         CalendarManager calendarManager = new CalendarManager(context);
-        calendarManager.deleteAllEvents();
+        //calendarManager.deleteAllEvents();
     }
 
     @Override
     public void save(EventModel model) {
         CalendarManager calendarManager = new CalendarManager(context);
-        calendarManager.save(model);
+        calendarManager.insertEvent(model);
     }
 
     @Override
     public EventModel getEventbyID(String id) {
         CalendarManager calendarManager = new CalendarManager(context);
-        calendarManager.getEventbyID(id);
+        return  calendarManager.getEventbyID(id);
     }
 }

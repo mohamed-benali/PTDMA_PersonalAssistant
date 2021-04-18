@@ -1,33 +1,34 @@
 package com.example.myapplication.CalendarManager;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.icu.util.Calendar;
 import android.net.Uri;
 import android.provider.CalendarContract;
+import android.text.format.DateUtils;
 import android.util.Log;
 
 import com.example.myapplication.Models.EventModel;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class CalendarManager {
     Context context;
+
+    Long calID;
 
     public Context getContext() {
         return context;
     }
     public CalendarManager(Context context) {
         this.context = context;
-    }
-
-    public List<EventModel> getEvents() {
-        Calendar beginTime = Calendar.getInstance();
-
-        return null;
-
+        calID = getCaliID();
     }
 
     public Long getCaliID() { //gets first calendar, if there are not calendars, returns null
@@ -65,9 +66,53 @@ public class CalendarManager {
         return null;
     }
 
-    public void insertEvent(EventModel eventModel) {
-        Long calID = this.getCaliID();
+    public List<EventModel> getEvents() {
+        return readCalendarEvent(context);
+    }
+    public List<EventModel> readCalendarEvent(Context context) {
+        long now = new Date().getTime();
 
+        Uri.Builder builder = Uri.parse("content://com.android.calendar/instances/when").buildUpon();
+        ContentUris.appendId(builder, now - DateUtils.DAY_IN_MILLIS * 10000);
+        ContentUris.appendId(builder, now + DateUtils.DAY_IN_MILLIS * 10000);
+
+        Cursor cursor = context.getContentResolver().query(builder.build(),
+                                            new String[]  {CalendarContract.Instances.TITLE,
+                                                    CalendarContract.Instances.BEGIN,
+                                                    CalendarContract.Instances.END,
+                                                    CalendarContract.Instances.DESCRIPTION,
+                                                    CalendarContract.Instances.EVENT_ID},
+                                            "Calendars._id=" + this.calID,
+                                            null, "startDay ASC");
+
+        cursor.moveToFirst();
+        // fetching calendars name
+
+        List<EventModel> eventModelList = new ArrayList<>();
+        // fetching calendars id
+        if(cursor.moveToFirst()) {
+            do {
+                final String title = cursor.getString(0);
+                final Date begin = new Date(cursor.getLong(1));
+                final Date end = new Date(cursor.getLong(2));
+                final String description = cursor.getString(3);
+                final Long eventId = cursor.getLong(4);
+
+                Pattern p = Pattern.compile(" ");
+                String[] items = p.split(begin.toString());
+
+                String month = String.valueOf(begin.getDate());
+                String day = String.valueOf(begin.getMonth()+1);
+                String year = String.valueOf(begin.getYear()+1900);
+                EventModel eventModel = new EventModel(title, description,year,month,day, eventId);
+
+                eventModelList.add(eventModel);
+            } while (cursor.moveToNext());
+        }
+        return eventModelList;
+    }
+
+    public void insertEvent(EventModel eventModel) {//TODO
         long startMillis = 0;
         long endMillis = 0;
         Calendar beginTime = Calendar.getInstance();
@@ -92,4 +137,28 @@ public class CalendarManager {
     }
 
 
+    public boolean eventExists(String id) {
+        List<EventModel> list = this.getEvents();
+        for(EventModel model : list) {
+            if(model.getTitle().equals(id)) return true;
+        }
+        return false;
+    }
+
+    public EventModel getEventbyID(String id) {
+        List<EventModel> list = this.getEvents();
+        for(EventModel model : list) {
+            if(model.getTitle().equals(id)) return model;
+        }
+        return null;
+    }
+
+    public void deleteEventById(String id_forDelete) {
+        EventModel eventModel = getEventbyID(id_forDelete);
+        long eventID = eventModel.getEventID();
+        ContentResolver cr = getContext().getContentResolver();
+        Uri deleteUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, eventID);
+        int rows = cr.delete(deleteUri, null, null);
+
+    }
 }

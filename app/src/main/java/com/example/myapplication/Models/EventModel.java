@@ -7,12 +7,15 @@ public class EventModel {
     private String month;
     private String day;
 
-    public EventModel(String title, String description, String year, String month, String day) {
+    private Long eventID;
+
+    public EventModel(String title, String description, String year, String month, String day, Long eventId) {
         setTitle(title);
         setDescription(description);
         setYear(year);
         setMonth(month);
         setDay(day);
+        setEventID(eventId);
     }
 
     public String getTitle() {
@@ -61,5 +64,13 @@ public class EventModel {
 
     public void setDay(String day) {
         this.day = day;
+    }
+
+    public Long getEventID() {
+        return eventID;
+    }
+
+    public void setEventID(Long eventID) {
+        this.eventID = eventID;
     }
 }
