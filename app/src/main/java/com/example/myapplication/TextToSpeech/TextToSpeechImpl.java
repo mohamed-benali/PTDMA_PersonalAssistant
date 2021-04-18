@@ -23,7 +23,7 @@ public class TextToSpeechImpl implements TextToSpeech {
                 @Override
                 public void onInit(int status) {
                     if(status == android.speech.tts.TextToSpeech.SUCCESS) {
-                        int result = tts.setLanguage(Locale.US);
+                        int result = tts.setLanguage(new Locale("es", "ES"));
 
                         if (result == android.speech.tts.TextToSpeech.LANG_MISSING_DATA
                                 || result == android.speech.tts.TextToSpeech.LANG_NOT_SUPPORTED) {
@@ -52,32 +52,38 @@ public class TextToSpeechImpl implements TextToSpeech {
 
     @Override
     public void askConfirmDelete() {
-        this.init_and_speak("Say Yes to confirm");
+        this.init_and_speak("si para confirmar");
+        //this.init_and_speak("Say Yes to confirm");
     }
 
     @Override
     public void sayElementDontExist() {
-        this.init_and_speak("The element does not exist");
+        this.init_and_speak("El elemento no existe");
+        //this.init_and_speak("The element does not exist");
     }
 
     @Override
     public void taskDontExist() {
-        this.init_and_speak("The task does not exist");
+        this.init_and_speak("La tarea no existe");
+        //this.init_and_speak("The task does not exist");
     }
 
     @Override
     public void didNotUnderstand() {
-        this.init_and_speak("Incorrect command. Please click the info button for help.");
+        this.init_and_speak("Comando incorrecto");
+        //this.init_and_speak("Incorrect command. Please click the info button for help.");
     }
 
     @Override
     public void listDontExist() {
-        this.init_and_speak("The list does not exist");
+        this.init_and_speak("La lista no existe");
+        //this.init_and_speak("The list does not exist");
     }
 
     @Override
     public void eventDontExist() {
-        this.init_and_speak("The event does not exist");
+        this.init_and_speak("El evento no existe");
+        //this.init_and_speak("The event does not exist");
     }
 
     @Override

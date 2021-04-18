@@ -3,6 +3,7 @@ package com.example.myapplication.Activities.Tasks;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.myapplication.Listeners.HelpOnButtonClickListener;
 import com.example.myapplication.Listeners.MicrophoneOnButtonClickListener;
 import com.example.myapplication.Models.TaskModel;
 import com.example.myapplication.NaturalLanguageProcessing.NaturalLanguageProcessing;
@@ -31,10 +32,15 @@ public class CreateTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_task);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Crear tarea");
         setSupportActionBar(toolbar);
 
         ImageButton imageButton = findViewById(R.id.imageButton);
         imageButton.setOnClickListener(new MicrophoneOnButtonClickListener(this));
+
+        String message = "-asignar titulo [titulo] \n-asignar descripcion [descripcion] \n" +
+                "-guardar";
+        findViewById(R.id.helpButton).setOnClickListener(new HelpOnButtonClickListener(this, "Comandos", message));
 
         editText_title = findViewById(R.id.edit_title);
         editText_desc = findViewById(R.id.edit_desc);

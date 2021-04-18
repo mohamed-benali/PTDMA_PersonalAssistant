@@ -40,17 +40,13 @@ public class NaturalLanguageProcessingImplSpanish implements NaturalLanguageProc
 
 
     @Override
-    public boolean isTaskDone(String spokenText) { // tarea completada [title]
-        spokenText = this.normalizeText(spokenText);
-        List<String> words = Arrays.asList(spokenText.split(" "));
-        return words.size() >= 3 && words.get(0).equals("tarea") && words.get(1).equals("completada");
+    public boolean isTaskDone(String spokenText) { // marcar [title]
+        return isBought(spokenText);
     }
 
     @Override
-    public boolean isTaskNotDone(String spokenText) { // tarea no completada [title]
-        spokenText = this.normalizeText(spokenText);
-        List<String> words = Arrays.asList(spokenText.split(" "));
-        return words.size() >= 4 && words.get(0).equals("tarea") && words.get(1).equals("no") &&  words.get(2).equals("completada");
+    public boolean isTaskNotDone(String spokenText) { // desmarcar [title]
+        return isNotBought(spokenText);
     }
 
     /**
@@ -61,9 +57,7 @@ public class NaturalLanguageProcessingImplSpanish implements NaturalLanguageProc
     @Override
     public String getTaskIdFromText(String spokenText) {
         spokenText = this.normalizeText(spokenText);
-        if(isTaskDone(spokenText)) return getTextWithout_N_FirstWords(spokenText, 2);
-        if(isTaskNotDone(spokenText)) return getTextWithout_N_FirstWords(spokenText, 3);
-        else return getTextWithout_N_FirstWords(spokenText, 1);
+        return getTextWithout_N_FirstWords(spokenText, 1);
     }
     // TODO: Fix bad sentences (Chcck if spokenText is to short and does overflow out of bounds)
     @Override
@@ -185,9 +179,7 @@ public class NaturalLanguageProcessingImplSpanish implements NaturalLanguageProc
     @Override
     public String getIdFromText(String spokenText) {
         spokenText = this.normalizeText(spokenText);
-        if(isTaskDone(spokenText)) return getTextWithout_N_FirstWords(spokenText, 2);
-        if(isTaskNotDone(spokenText)) return getTextWithout_N_FirstWords(spokenText, 3);
-        else return getTextWithout_N_FirstWords(spokenText, 1);
+        return getTextWithout_N_FirstWords(spokenText, 1);
     }
 
     @Override
@@ -198,7 +190,7 @@ public class NaturalLanguageProcessingImplSpanish implements NaturalLanguageProc
     }
 
     @Override
-    public boolean isNotBought(String spokenText) { // no comprar [element]
+    public boolean isNotBought(String spokenText) { // desmarcar [element]
         spokenText = this.normalizeText(spokenText);
         List<String> words = Arrays.asList(spokenText.split(" "));
         return words.size() >= 2 && words.get(0).equals("desmarcar");

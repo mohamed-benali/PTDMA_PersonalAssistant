@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.widget.ImageButton;
 
+import com.example.myapplication.Listeners.HelpOnButtonClickListener;
 import com.example.myapplication.Listeners.MicrophoneOnButtonClickListener;
 import com.example.myapplication.NaturalLanguageProcessing.NaturalLanguageProcessing;
 import com.example.myapplication.Persistence.DBHelper;
@@ -13,6 +14,8 @@ import com.example.myapplication.Models.TaskModel;
 import com.example.myapplication.R;
 import com.example.myapplication.Adapters.TaskListAdapter;
 import com.example.myapplication.REQUEST_CODES.REQUEST_CODES;
+import com.example.myapplication.RecognizerIntentManager.RecognizerIntentManager;
+import com.example.myapplication.RecognizerIntentManager.RecognizerIntentManagerImpl;
 import com.example.myapplication.TextToSpeech.TextToSpeech;
 import com.example.myapplication.TextToSpeech.TextToSpeechImpl;
 
@@ -41,10 +44,15 @@ public class TasksActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Tareas");
         setSupportActionBar(toolbar);
 
         ImageButton imageButton = findViewById(R.id.imageButton);
         imageButton.setOnClickListener(new MicrophoneOnButtonClickListener(this));
+
+        String message = "-crear [titulo] \n-modificar [titulo] \n" +
+                "-eliminar [titulo]\n-eliminar todo\n-marcar [titulo]\n-desmarcar [titulo]";
+        findViewById(R.id.helpButton).setOnClickListener(new HelpOnButtonClickListener(this, "Comandos", message));
 
         mRecyclerView = findViewById(R.id.TasksRecycleViewer);
 
@@ -95,10 +103,13 @@ public class TasksActivity extends AppCompatActivity {
             else if(NLP.isDeleteTask(spokenText)) {
                 String taskID = NLP.getTaskIdFromText(spokenText);
                 //TODO: Confirm task with id exists
-                if(dbHelper.taskExists(taskID)) speaker.askConfirmDelete();
+                if(dbHelper.taskExists(taskID)) {
+                    speaker.askConfirmDelete();
+                    this.askingForDeleteConfirm = true;
+                }
                 else speaker.sayElementDontExist();
                 taskID_forDelete = taskID;
-                this.askingForDeleteConfirm = true;
+
             }
             else if(NLP.isDeleteAllTask(spokenText)) {
                 speaker.askConfirmDelete();
@@ -108,13 +119,16 @@ public class TasksActivity extends AppCompatActivity {
                 if(askingForDeleteConfirm) {
                     dbHelper.deleteTaskById(taskID_forDelete);
                     this.askingForDeleteConfirm = false;
+                    restart();
                 }
                 else if(askingForDeleteAllConfirm) {
                     dbHelper.deleteAllTasks();
                     askingForDeleteAllConfirm = false;
+                    restart();
                 }
-                restart();
+
             }
+            else if(spokenText.equals("no")) {}
             else if(NLP.isTaskDone(spokenText)) {
                 String taskID = NLP.getTaskIdFromText(spokenText);
                 TaskModel taskModel =dbHelper.getTask(taskID);
@@ -138,7 +152,18 @@ public class TasksActivity extends AppCompatActivity {
 
             else { // Didnt understand,
                 // Dialog or something with the info
+                askingForDeleteAllConfirm = false;
+                this.askingForDeleteConfirm = false;
                 speaker.didNotUnderstand();
+            }
+            if(askingForDeleteAllConfirm || askingForDeleteConfirm) {
+                try {
+                    Thread.sleep(1700);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                RecognizerIntentManager recognizerIntentManager = new RecognizerIntentManagerImpl(this);
+                recognizerIntentManager.startSpeechToTextIntent();
             }
 
         }

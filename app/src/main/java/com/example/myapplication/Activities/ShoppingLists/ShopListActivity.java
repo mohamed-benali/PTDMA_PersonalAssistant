@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.example.myapplication.Activities.Tasks.CreateTaskActivity;
 import com.example.myapplication.Activities.Tasks.UpdateTaskActivity;
 import com.example.myapplication.Adapters.ShopListAdapter;
+import com.example.myapplication.Listeners.HelpOnButtonClickListener;
 import com.example.myapplication.Listeners.MicrophoneOnButtonClickListener;
 import com.example.myapplication.Models.ListModel;
 import com.example.myapplication.Models.TaskModel;
@@ -13,6 +14,8 @@ import com.example.myapplication.NaturalLanguageProcessing.NaturalLanguageProces
 import com.example.myapplication.Persistence.DBHelper;
 import com.example.myapplication.Persistence.DBHelperImpl;
 import com.example.myapplication.REQUEST_CODES.REQUEST_CODES;
+import com.example.myapplication.RecognizerIntentManager.RecognizerIntentManager;
+import com.example.myapplication.RecognizerIntentManager.RecognizerIntentManagerImpl;
 import com.example.myapplication.TextToSpeech.TextToSpeech;
 import com.example.myapplication.TextToSpeech.TextToSpeechImpl;
 
@@ -46,10 +49,15 @@ public class ShopListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_list);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Lista de comparar");
         setSupportActionBar(toolbar);
 
         ImageButton imageButton = findViewById(R.id.imageButton);
         imageButton.setOnClickListener(new MicrophoneOnButtonClickListener(this));
+
+        String message = "-crear [titulo] \n-ver [titulo] \n" +
+                "-eliminar [titulo] \n-eliminar todo";
+        findViewById(R.id.helpButton).setOnClickListener(new HelpOnButtonClickListener(this, "Comandos", message));
 
 
         mRecyclerView = findViewById(R.id.ShopListRecycleViewer);
@@ -107,16 +115,29 @@ public class ShopListActivity extends AppCompatActivity {
                 if(askingForDeleteConfirm) {
                     dbHelper.deleteListById(ID_forDelete);
                     this.askingForDeleteConfirm = false;
+                    restart();
                 }
                 else if(askingForDeleteAllConfirm) {
                     dbHelper.deleteAllLists();
                     askingForDeleteAllConfirm = false;
+                    restart();
                 }
-                restart();
             }
+            else if(spokenText.equals("no")) {}
             else { // Didnt understand,
                 // Dialog or something with the info
+                askingForDeleteAllConfirm = false;
+                this.askingForDeleteConfirm = false;
                 speaker.didNotUnderstand();
+            }
+            if(askingForDeleteAllConfirm || askingForDeleteConfirm) {
+                try {
+                    Thread.sleep(1700);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                RecognizerIntentManager recognizerIntentManager = new RecognizerIntentManagerImpl(this);
+                recognizerIntentManager.startSpeechToTextIntent();
             }
 
         }

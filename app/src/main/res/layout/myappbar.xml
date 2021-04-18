@@ -24,6 +24,17 @@
             android:background="#FFFFFF"
             app:srcCompat="@android:drawable/ic_btn_speak_now" />
 
+        <ImageButton
+            android:id="@+id/helpButton"
+            android:layout_width="47dp"
+            android:layout_height="44dp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="10dp"
+            android:background="#FFEB3B"
+            app:srcCompat="@android:drawable/ic_menu_info_details" />
+
+
+
 
     </androidx.appcompat.widget.Toolbar>
 

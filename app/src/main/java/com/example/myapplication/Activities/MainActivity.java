@@ -7,37 +7,47 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.util.Log;
 import android.widget.ImageButton;
 
+import com.example.myapplication.Activities.Events.EventsActivity;
 import com.example.myapplication.Activities.ShoppingLists.ShopListActivity;
 import com.example.myapplication.Activities.Tasks.TasksActivity;
+import com.example.myapplication.Listeners.HelpOnButtonClickListener;
 import com.example.myapplication.Listeners.MicrophoneOnButtonClickListener;
 import com.example.myapplication.NaturalLanguageProcessing.NaturalLanguageProcessing;
 import com.example.myapplication.PermissionsManager;
 import com.example.myapplication.R;
 import com.example.myapplication.REQUEST_CODES.REQUEST_CODES;
+import com.example.myapplication.TextToSpeech.TextToSpeech;
+import com.example.myapplication.TextToSpeech.TextToSpeechImpl;
 
 import java.util.List;
-import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    TextToSpeech speaker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Asistente: Home");
         setSupportActionBar(toolbar);
 
         ImageButton imageButton = findViewById(R.id.imageButton);
         imageButton.setOnClickListener(new MicrophoneOnButtonClickListener(this));
 
+        String title = "Comandos";
+        String message = "-tareas \n-eventos \n-listas";
+        findViewById(R.id.helpButton).setOnClickListener(new HelpOnButtonClickListener(this, title, message));
+
         PermissionsManager permissionsManager = new PermissionsManager(this);
         if(permissionsManager.calendarPermissionNotGranted()) permissionsManager.checkCalendarPermission();
 
         //Log.d("----------------------------------------TimeZone", TimeZone.getDefault().toString());
+        speaker = new TextToSpeechImpl(this);
 
     }
 
@@ -65,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent myIntent = new Intent(this, EventsActivity.class);
                 startActivity(myIntent);
             }
+            else speaker.didNotUnderstand();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

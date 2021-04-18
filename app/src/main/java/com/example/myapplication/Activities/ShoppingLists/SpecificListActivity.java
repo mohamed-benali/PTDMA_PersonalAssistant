@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.example.myapplication.Adapters.ShopListAdapter;
 import com.example.myapplication.Adapters.ShopListElementAdapter;
+import com.example.myapplication.Listeners.HelpOnButtonClickListener;
 import com.example.myapplication.Listeners.MicrophoneOnButtonClickListener;
 import com.example.myapplication.Models.ListModel;
 import com.example.myapplication.Models.TaskModel;
@@ -12,6 +13,8 @@ import com.example.myapplication.NaturalLanguageProcessing.NaturalLanguageProces
 import com.example.myapplication.Persistence.DBHelper;
 import com.example.myapplication.Persistence.DBHelperImpl;
 import com.example.myapplication.REQUEST_CODES.REQUEST_CODES;
+import com.example.myapplication.RecognizerIntentManager.RecognizerIntentManager;
+import com.example.myapplication.RecognizerIntentManager.RecognizerIntentManagerImpl;
 import com.example.myapplication.TextToSpeech.TextToSpeech;
 import com.example.myapplication.TextToSpeech.TextToSpeechImpl;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -57,6 +60,10 @@ public class SpecificListActivity extends AppCompatActivity {
 
         ImageButton imageButton = findViewById(R.id.imageButton);
         imageButton.setOnClickListener(new MicrophoneOnButtonClickListener(this));
+
+        String message = "-crear [titulo] \n-marcar [titulo] \n-desmarcar [titulo] \n" +
+                "-eliminar [titulo] \n-eliminar todo";
+        findViewById(R.id.helpButton).setOnClickListener(new HelpOnButtonClickListener(this, "Comandos", message));
 
         mRecyclerView = findViewById(R.id.ShopListRecycleViewer);
 
@@ -133,8 +140,20 @@ public class SpecificListActivity extends AppCompatActivity {
                 }
                 else speaker.sayElementDontExist();
             }
+            else if(spokenText.equals("no")) {}
             else { // Dialog or something with the info
+                askingForDeleteAllConfirm = false;
+                this.askingForDeleteConfirm = false;
                 speaker.didNotUnderstand();
+            }
+            if(askingForDeleteAllConfirm || askingForDeleteConfirm) {
+                try {
+                    Thread.sleep(1700);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                RecognizerIntentManager recognizerIntentManager = new RecognizerIntentManagerImpl(this);
+                recognizerIntentManager.startSpeechToTextIntent();
             }
 
         }

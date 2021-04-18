@@ -1,8 +1,10 @@
-package com.example.myapplication.Activities;
+package com.example.myapplication.Activities.Events;
 
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.myapplication.Activities.Events.EventsActivity;
+import com.example.myapplication.Listeners.HelpOnButtonClickListener;
 import com.example.myapplication.Listeners.MicrophoneOnButtonClickListener;
 import com.example.myapplication.Models.EventModel;
 import com.example.myapplication.NaturalLanguageProcessing.NaturalLanguageProcessing;
@@ -37,10 +39,16 @@ public class SpecificEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_specific_event);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        String ID = this.getIntent().getStringExtra("ID");
+        toolbar.setTitle("Evento");
         setSupportActionBar(toolbar);
 
         ImageButton imageButton = findViewById(R.id.imageButton);
         imageButton.setOnClickListener(new MicrophoneOnButtonClickListener(this));
+
+        String message = "-asignar titulo [titulo] \n-asignar descripcion [descripcion] \n" +
+                         "-asignar año [año] \n-asignar mes [mes] \n-asignar dia [dia]\n-guardar";
+        findViewById(R.id.helpButton).setOnClickListener(new HelpOnButtonClickListener(this, "Comandos", message));
 
         editText_title = findViewById(R.id.edit_title);
         editText_desc = findViewById(R.id.edit_desc);
@@ -48,7 +56,6 @@ public class SpecificEventActivity extends AppCompatActivity {
         editText_month = findViewById(R.id.month);
         editText_day = findViewById(R.id.day);
 
-        String ID = this.getIntent().getStringExtra("ID");
         editText_title.setText(ID);
 
         DBHelper dbHelper = new DBHelperImpl(this);

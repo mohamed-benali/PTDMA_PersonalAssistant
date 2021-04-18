@@ -21,11 +21,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
-            android:name=".Activities.SpecificEventActivity"
+            android:name=".Activities.Events.SpecificEventActivity"
             android:label="@string/title_activity_specific_event"
             android:theme="@style/Theme.MyApplication.NoActionBar"></activity>
         <activity
-            android:name=".Activities.EventsActivity"
+            android:name=".Activities.Events.EventsActivity"
             android:label="@string/title_activity_events"
             android:theme="@style/Theme.MyApplication.NoActionBar" />
         <activity

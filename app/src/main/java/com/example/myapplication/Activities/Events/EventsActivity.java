@@ -1,21 +1,17 @@
-package com.example.myapplication.Activities;
+package com.example.myapplication.Activities.Events;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.myapplication.Activities.ShoppingLists.ShopListActivity;
-import com.example.myapplication.Activities.ShoppingLists.SpecificListActivity;
-import com.example.myapplication.Activities.Tasks.CreateTaskActivity;
 import com.example.myapplication.Adapters.EventsAdapter;
-import com.example.myapplication.CalendarManager.CalendarManager;
+import com.example.myapplication.Listeners.HelpOnButtonClickListener;
 import com.example.myapplication.Listeners.MicrophoneOnButtonClickListener;
-import com.example.myapplication.Models.ListModel;
 import com.example.myapplication.NaturalLanguageProcessing.NaturalLanguageProcessing;
-import com.example.myapplication.PermissionsManager;
 import com.example.myapplication.Persistence.DBHelper;
 import com.example.myapplication.Persistence.DBHelperImpl;
 import com.example.myapplication.REQUEST_CODES.REQUEST_CODES;
+import com.example.myapplication.RecognizerIntentManager.RecognizerIntentManager;
+import com.example.myapplication.RecognizerIntentManager.RecognizerIntentManagerImpl;
 import com.example.myapplication.TextToSpeech.TextToSpeech;
 import com.example.myapplication.TextToSpeech.TextToSpeechImpl;
 
@@ -32,6 +28,8 @@ import android.widget.ImageButton;
 import com.example.myapplication.R;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class EventsActivity extends AppCompatActivity {
 
@@ -50,10 +48,15 @@ public class EventsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Eventos");
         setSupportActionBar(toolbar);
 
         ImageButton imageButton = findViewById(R.id.imageButton);
         imageButton.setOnClickListener(new MicrophoneOnButtonClickListener(this));
+
+        String message = "-crear [titulo] \n-ver [titulo] \n" +
+                "-eliminar [titulo]";
+        findViewById(R.id.helpButton).setOnClickListener(new HelpOnButtonClickListener(this, "Comandos", message));
 
         mRecyclerView = findViewById(R.id.ListRecycleViewer);
 
@@ -100,15 +103,17 @@ public class EventsActivity extends AppCompatActivity {
             }
             else if(NLP.isDelete(spokenText)) {
                 String ID = NLP.getIdFromText(spokenText);
-                if(dbHelper.eventExists(ID)) speaker.askConfirmDelete();
+                if(dbHelper.eventExists(ID)) {
+                    speaker.askConfirmDelete();
+                    this.askingForDeleteConfirm = true;
+                }
                 else speaker.sayElementDontExist();
                 ID_forDelete = ID;
-                this.askingForDeleteConfirm = true;
-            }
+            }/*
             else if(NLP.isDeleteAll(spokenText)) {
                 speaker.askConfirmDelete();
                 this.askingForDeleteAllConfirm = true;
-            }
+            }*/
             else if(NLP.isConfirmation(spokenText)) {
                 if(askingForDeleteConfirm) {
                     dbHelper.deleteEventById(ID_forDelete);
@@ -120,9 +125,21 @@ public class EventsActivity extends AppCompatActivity {
                 }
                 restart();
             }
+            else if(spokenText.equals("no")) {}
             else { // Didnt understand,
                 // Dialog or something with the info
+                askingForDeleteAllConfirm = false;
+                this.askingForDeleteConfirm = false;
                 speaker.didNotUnderstand();
+            }
+            if(askingForDeleteAllConfirm || askingForDeleteConfirm) {
+                try {
+                    Thread.sleep(1700);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                RecognizerIntentManager recognizerIntentManager = new RecognizerIntentManagerImpl(this);
+                recognizerIntentManager.startSpeechToTextIntent();
             }
 
         }
