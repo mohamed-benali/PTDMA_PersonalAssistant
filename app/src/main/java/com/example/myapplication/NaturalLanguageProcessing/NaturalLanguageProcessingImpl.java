@@ -163,5 +163,25 @@ public class NaturalLanguageProcessingImpl implements NaturalLanguageProcessing 
         return false;
     }
 
+    @Override
+    public boolean isSetYear(String spokenText) {
+        return false;
+    }
+
+    @Override
+    public boolean isSetMonth(String spokenText) {
+        return false;
+    }
+
+    @Override
+    public boolean isSetDay(String spokenText) {
+        return false;
+    }
+
+    @Override
+    public String getDateElementFromText(String spokenText) {
+        return null;
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package com.example.myapplication.Persistence;
 
+import com.example.myapplication.Models.EventModel;
 import com.example.myapplication.Models.ListModel;
 import com.example.myapplication.Models.TaskModel;
 
@@ -33,4 +34,16 @@ public interface DBHelper {
     boolean listElementExists(String id, String elementId);
 
     void deleteListElementById(String ID, String id_forDelete);
+
+    List<EventModel> getEvents();
+
+    boolean eventExists(String id);
+
+    void deleteEventById(String id_forDelete);
+
+    void deleteAllEvents();
+
+    void save(EventModel model);
+
+    EventModel getEventbyID(String id);
 }

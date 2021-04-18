@@ -7,7 +7,6 @@
     tools:context=".Activities.ShoppingLists.ShopListActivity">
 
     <include layout="@layout/myappbar" />
-
     <include layout="@layout/content_shop_list" />
 
 

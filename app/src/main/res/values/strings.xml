@@ -15,9 +15,14 @@
     <!-- Strings used for Forms -->
     <string name="Title">Title</string>
     <string name="Description">Description</string>
-    <string name="Date">Date</string>
+    <string name="Year">Year</string>
+
+    <string name="Month">Month</string>
+    <string name="Day">Day</string>
+
     <string name="title_activity_update_task">UpdateTaskActivity</string>
     <string name="title_activity_shop_list">ShopListActivity</string>
     <string name="title_activity_specific_list">SpecificListActivity</string>
     <string name="title_activity_events">EventsActivity</string>
+    <string name="title_activity_specific_event">SpecificEventActivity</string>
 </resources>

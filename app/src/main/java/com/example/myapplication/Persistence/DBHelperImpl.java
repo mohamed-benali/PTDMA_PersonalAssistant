@@ -2,6 +2,8 @@ package com.example.myapplication.Persistence;
 
 import android.content.Context;
 
+import com.example.myapplication.CalendarManager.CalendarManager;
+import com.example.myapplication.Models.EventModel;
 import com.example.myapplication.Models.ListModel;
 import com.example.myapplication.Models.TaskModel;
 
@@ -147,7 +149,7 @@ public class DBHelperImpl implements DBHelper {
     }
 
 
-
+    //************************************************ Shopping List ************************************************//
 
     private void createFileList(String path) {
         List<ListModel> mDades = new ArrayList<>();
@@ -244,6 +246,7 @@ public class DBHelperImpl implements DBHelper {
         this.save(ID, model);
     }
 
+
     private void setShopLists(List<ListModel> mDades) {
         FileOutputStream fos;
         try {
@@ -254,5 +257,42 @@ public class DBHelperImpl implements DBHelper {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    //************************************************ EVENTS ************************************************//
+    @Override
+    public List<EventModel> getEvents() {
+        CalendarManager calendarManager = new CalendarManager(context);
+        return calendarManager.getEvents();
+    }
+
+    @Override
+    public boolean eventExists(String id) {
+        CalendarManager calendarManager = new CalendarManager(context);
+        return calendarManager.eventExists(id);
+    }
+
+    @Override
+    public void deleteEventById(String id_forDelete) {
+        CalendarManager calendarManager = new CalendarManager(context);
+        calendarManager.deleteEventById(id_forDelete);
+    }
+
+    @Override
+    public void deleteAllEvents() {
+        CalendarManager calendarManager = new CalendarManager(context);
+        calendarManager.deleteAllEvents();
+    }
+
+    @Override
+    public void save(EventModel model) {
+        CalendarManager calendarManager = new CalendarManager(context);
+        calendarManager.save(model);
+    }
+
+    @Override
+    public EventModel getEventbyID(String id) {
+        CalendarManager calendarManager = new CalendarManager(context);
+        calendarManager.getEventbyID(id);
     }
 }

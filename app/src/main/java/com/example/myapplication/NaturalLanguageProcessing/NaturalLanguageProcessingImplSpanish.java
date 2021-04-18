@@ -83,7 +83,7 @@ public class NaturalLanguageProcessingImplSpanish implements NaturalLanguageProc
     }
     private boolean isXY(String spokenText, String X, String Y) {
         List<String> words = Arrays.asList(spokenText.split(" "));
-        return words.get(0).equals(X) && words.get(1).equals(Y);
+        return words.size()>= 3 && words.get(0).equals(X) && words.get(1).equals(Y);
     }
 
     @Override
@@ -206,10 +206,34 @@ public class NaturalLanguageProcessingImplSpanish implements NaturalLanguageProc
 
 
 
-    //************************** SHOPPING LIST *****************************//
+    //************************** EVENTOS *****************************//
     @Override
     public boolean isGoToEvents(String spokenText) {
-        return spokenText.equals("event") || spokenText.equals("events");
+        return spokenText.equals("evento") || spokenText.equals("eventos");
+    }
+
+    @Override
+    public boolean isSetYear(String spokenText) {
+        spokenText = this.normalizeText(spokenText);
+        return isSetY(spokenText, "año");
+    }
+
+    @Override
+    public boolean isSetMonth(String spokenText) {
+        spokenText = this.normalizeText(spokenText);
+        return isSetY(spokenText, "mes");
+    }
+
+    @Override
+    public boolean isSetDay(String spokenText) {
+        spokenText = this.normalizeText(spokenText);
+        return isSetY(spokenText, "dia");
+    }
+
+    @Override
+    public String getDateElementFromText(String spokenText) {
+        spokenText = this.normalizeText(spokenText);
+        return getTextWithout_N_FirstWords(spokenText, 2);
     }
 
 }

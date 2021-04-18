@@ -14,4 +14,5 @@ public interface TextToSpeech {
 
     void listDontExist();
 
+    void eventDontExist();
 }

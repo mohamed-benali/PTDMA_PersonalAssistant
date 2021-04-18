@@ -49,4 +49,12 @@ public interface NaturalLanguageProcessing {
     boolean isNotBought(String spokenText);
 
     boolean isGoToEvents(String spokenText);
+
+    boolean isSetYear(String spokenText);
+
+    boolean isSetMonth(String spokenText);
+
+    boolean isSetDay(String spokenText);
+
+    String getDateElementFromText(String spokenText);
 }

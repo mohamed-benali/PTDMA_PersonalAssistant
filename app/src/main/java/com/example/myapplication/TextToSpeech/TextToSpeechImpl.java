@@ -76,6 +76,11 @@ public class TextToSpeechImpl implements TextToSpeech {
     }
 
     @Override
+    public void eventDontExist() {
+        this.init_and_speak("The event does not exist");
+    }
+
+    @Override
     public void destroy() {
         if(tts != null) {
             tts.stop();

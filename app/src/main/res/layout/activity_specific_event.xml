@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.EventsActivity">
+    tools:context=".Activities.SpecificEventActivity">
 
     <include layout="@layout/myappbar" />
 
-    <include layout="@layout/content_events" />
+    <include layout="@layout/content_specific_event" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

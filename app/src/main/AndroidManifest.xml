@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
 
     <queries>
         <intent>
@@ -19,9 +21,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
+            android:name=".Activities.SpecificEventActivity"
+            android:label="@string/title_activity_specific_event"
+            android:theme="@style/Theme.MyApplication.NoActionBar"></activity>
+        <activity
             android:name=".Activities.EventsActivity"
             android:label="@string/title_activity_events"
-            android:theme="@style/Theme.MyApplication.NoActionBar"></activity>
+            android:theme="@style/Theme.MyApplication.NoActionBar" />
         <activity
             android:name=".Activities.ShoppingLists.SpecificListActivity"
             android:label="@string/title_activity_specific_list"
