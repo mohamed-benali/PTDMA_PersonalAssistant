@@ -34,6 +34,8 @@ public class SpecificEventActivity extends AppCompatActivity {
     EditText editText_month;
     EditText editText_day;
 
+    Long eventId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +59,7 @@ public class SpecificEventActivity extends AppCompatActivity {
         editText_day = findViewById(R.id.day);
 
         editText_title.setText(ID);
-
+        eventId = null;
         DBHelper dbHelper = new DBHelperImpl(this);
         if(!getIntent().getBooleanExtra("isCreate", false)) { // Es update o ver evento
             EventModel eventModel = dbHelper.getEventbyID(ID);
@@ -66,6 +68,7 @@ public class SpecificEventActivity extends AppCompatActivity {
             editText_year.setText(eventModel.getYear());
             editText_month.setText(eventModel.getMonth());
             editText_day.setText(eventModel.getDay());
+            eventId = eventModel.getEventID();
         } else { // Es creacion  (quiza poner default en la fecha)
             Date currentTime = Calendar.getInstance().getTime();
             editText_year.setText(String.valueOf(currentTime.getYear()+1900));
@@ -118,7 +121,7 @@ public class SpecificEventActivity extends AppCompatActivity {
                                                 editText_desc.getText().toString().trim(),
                                                 editText_year.getText().toString().trim(),
                                                 editText_month.getText().toString().trim(),
-                                                editText_day.getText().toString().trim(), null);
+                                                editText_day.getText().toString().trim(), eventId);
             dbHelper.save(model);
             startActivity(new Intent(this, EventsActivity.class)); // Go back
         }

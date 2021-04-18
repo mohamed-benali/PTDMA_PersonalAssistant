@@ -3,6 +3,7 @@ package com.example.myapplication.Adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,13 +24,14 @@ public class TaskListAdapter extends RecyclerView.Adapter {
     public static class myViewHolder extends RecyclerView.ViewHolder {
         public TextView textView_title;
         public TextView textView_description;
-        public TextView textView_done;
+        public CheckBox done;
 
         public myViewHolder(View itemView) {
             super(itemView);
             textView_title          = itemView.findViewById(R.id.title);
             textView_description    = itemView.findViewById(R.id.description);
-            textView_done           = itemView.findViewById(R.id.done);
+            done           = itemView.findViewById(R.id.done);
+
         }
 
     }
@@ -51,7 +53,7 @@ public class TaskListAdapter extends RecyclerView.Adapter {
 
         holder2.textView_title.setText(taskModel.getTitle());
         holder2.textView_description.setText(taskModel.getDescription());
-        holder2.textView_done.setText(taskModel.getDone().toString());
+        holder2.done.setChecked(taskModel.getDone());
 
     }
 
