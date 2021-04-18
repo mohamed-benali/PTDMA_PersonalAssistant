@@ -7,6 +7,8 @@
     tools:context=".Activities.Tasks.TasksActivity">
 
     <include layout="@layout/myappbar" />
+    <include layout="@layout/content_main" />
+
 
 
 

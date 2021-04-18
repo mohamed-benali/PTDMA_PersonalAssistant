@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.myapplication.Activities.Events.EventsActivity;
 import com.example.myapplication.Activities.ShoppingLists.ShopListActivity;
@@ -48,6 +49,14 @@ public class MainActivity extends AppCompatActivity {
 
         //Log.d("----------------------------------------TimeZone", TimeZone.getDefault().toString());
         speaker = new TextToSpeechImpl(this);
+
+        String info = "Esta aplicación es una asistente de voz que trabaja con tareas, listas y eventos.\n\n";
+        info += "La aplicacion funciona por voz casi siempre excepto para hablar (tocar micro), " +
+                "ver comandos disponibles (tocar simbolo i)" +
+                " y ir para atras (usar boton del propio telefono)";
+
+        TextView textView = findViewById(R.id.info);
+        textView.setText(info);
 
     }
 
